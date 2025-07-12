@@ -18,6 +18,11 @@ enum FlightStages implements Trackable {GROUNDED, LAUNCH, CRUISE, DATA_COLLECTIO
             System.out.println(this + " has landed successfully.");
         }
     }
+
+    public FlightStages getNextStage() {
+        FlightStages[] allStages = FlightStages.values();
+        return  allStages[(ordinal() + 1) % allStages.length];
+    }
 }
 
 
@@ -74,6 +79,14 @@ interface FlightEnabled {
     void takeOff();
     void land();
     void fly();
+
+    default FlightStages transition(FlightStages stage) {
+//        System.out.println("Transition not implemented on " + getClass().getName());
+//        return null;
+        FlightStages nextStage = stage.getNextStage();
+        System.out.println("Transitioning from " + stage + " to " + nextStage);
+        return nextStage;
+    }
 
 }
 
